@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Traffic Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1 class="title">🚦 Neon Traffic Light Simulator</h1>
+
+    <div class="controls">
+        <button id="startBtn">Start</button>
+        <button id="pauseBtn">Pause</button>
+        <button id="rushBtn">Rush Hour</button>
+        <button id="resetBtn">Reset</button>
+    </div>
+
+    <div class="city">
+        <!-- Traffic Light -->
+        <div class="traffic-light">
+            <div class="light red"></div>
+            <div class="light yellow"></div>
+            <div class="light green"></div>
+        </div>
+
+        <!-- Pedestrian Button -->
+        <div class="ped-panel">
+            <button id="pedBtn">Pedestrian Walk</button>
+            <div id="pedSignal" class="ped-signal stop">STOP</div>
+        </div>
+
+        <!-- Road + Cars -->
+        <div class="road">
+            <div id="car1" class="car"></div>
+            <div id="car2" class="car"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

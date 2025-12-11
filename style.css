@@ -1,0 +1,143 @@
+body {
+    background: #0a0f1f;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    text-align: center;
+}
+
+.title {
+    font-size: 2rem;
+    margin-top: 20px;
+    color: #05d9e8;
+    text-shadow: 0 0 10px #05d9e8;
+}
+
+/* Buttons */
+.controls button {
+    margin: 5px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background: #1b2a41;
+    cursor: pointer;
+    box-shadow: 0 0 10px #05d9e8;
+    transition: 0.2s;
+}
+
+.controls button:hover {
+    background: #05d9e8;
+    color: #000;
+}
+
+.city {
+    width: 80%;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 12px;
+    background: #111;
+    box-shadow: 0 0 25px #05d9e8 inset;
+}
+
+/* Traffic Light */
+.traffic-light {
+    width: 70px;
+    background: black;
+    padding: 10px;
+    border-radius: 15px;
+    margin: auto;
+    box-shadow: 0 0 15px #04c2c9;
+}
+
+.light {
+    width: 40px;
+    height: 40px;
+    margin: 10px auto;
+    border-radius: 50%;
+    background: #222;
+    opacity: 0.2;
+    box-shadow: 0 0 10px #000;
+}
+
+/* Light Colors */
+.red.active {
+    background: #ff003c;
+    box-shadow: 0 0 20px #ff003c;
+    opacity: 1;
+}
+
+.yellow.active {
+    background: #faff00;
+    box-shadow: 0 0 20px #ffee00;
+    opacity: 1;
+}
+
+.green.active {
+    background: #00ff6e;
+    box-shadow: 0 0 20px #00ff6e;
+    opacity: 1;
+}
+
+/* Pedestrian Panel */
+.ped-panel {
+    margin: 20px;
+}
+
+#pedBtn {
+    padding: 10px 20px;
+    background: #ff00e6;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 10px #ff00e6;
+}
+
+#pedSignal {
+    margin-top: 10px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    text-shadow: 0 0 10px;
+}
+
+.ped-signal.stop {
+    color: red;
+    text-shadow: 0 0 10px red;
+}
+
+.ped-signal.walk {
+    color: #00ff6e;
+    text-shadow: 0 0 10px #00ff6e;
+}
+
+/* Road */
+.road {
+    position: relative;
+    width: 100%;
+    height: 160px;
+    background: #0d0d0d;
+    border-top: 4px dashed #05d9e8;
+    border-bottom: 4px dashed #05d9e8;
+    overflow: hidden;
+    margin-top: 30px;
+}
+
+/* Cars */
+.car {
+    position: absolute;
+    width: 60px;
+    height: 30px;
+    border-radius: 6px;
+    background: #ff009d;
+    box-shadow: 0 0 20px #ff009d;
+    top: 30px;
+    left: -80px;
+}
+
+#car2 {
+    top: 100px;
+    background: #05d9e8;
+    box-shadow: 0 0 20px #05d9e8;
+}
