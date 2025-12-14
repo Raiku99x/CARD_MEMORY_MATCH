@@ -391,9 +391,26 @@ h3 {
 
 #players-info {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-    margin-bottom: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: clamp(8px, 2.5vw, 15px);
+    margin-bottom: clamp(10px, 2.5vw, 20px);
+    width: 100%;
+}
+
+/* Mobile - Always Horizontal */
+@media (max-width: 480px) {
+    #players-info {
+        grid-template-columns: repeat(4, 1fr); /* Always 4 columns max */
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+}
+
+/* Hide matched cards on mobile */
+@media (max-width: 480px) {
+    .player-matches {
+        display: none;
+    }
 }
 
 @media (min-width: 640px) {
@@ -418,19 +435,56 @@ h3 {
 
 .player-card.active {
     border-color: #FFD700;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-    transform: scale(1.03);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    transform: scale(1.05);
 }
 
-.player-card h3 {
-    margin: 0 0 8px 0;
-    font-size: 0.95rem;
+/* Player-Specific Active Backgrounds */
+.player-card.player-1.active {
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    color: white;
 }
 
-.player-score {
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: #667eea;
+.player-card.player-2.active {
+    background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+    color: white;
+}
+
+.player-card.player-3.active {
+    background: linear-gradient(135deg, #F7B731 0%, #FFA502 100%);
+    color: white;
+}
+
+.player-card.player-4.active {
+    background: linear-gradient(135deg, #A29BFE 0%, #6C5CE7 100%);
+    color: white;
+}
+
+/* Keep score visible on colored background */
+.player-card.active .player-score {
+    color: white;
+}
+
+/* Mobile - Compact Player Cards */
+@media (max-width: 480px) {
+    .player-card {
+        padding: 8px 5px;
+        border-radius: 10px;
+        border-width: 2px;
+    }
+    
+    .player-card h3 {
+        margin: 0 0 4px 0;
+        font-size: 0.75rem;
+    }
+    
+    .player-score {
+        font-size: 0.85rem;
+    }
+    
+    .player-card.active {
+        transform: scale(1.02); /* Less scaling on mobile */
+    }
 }
 
 .player-matches {
@@ -450,6 +504,28 @@ h3 {
     justify-content: center;
     font-size: 12px;
     background: #ecf0f1;
+}
+
+/* Mobile - Compact Player Cards */
+@media (max-width: 480px) {
+    .player-card {
+        padding: 8px 5px;
+        border-radius: 10px;
+        border-width: 2px;
+    }
+    
+    .player-card h3 {
+        margin: 0 0 4px 0;
+        font-size: 0.75rem;
+    }
+    
+    .player-score {
+        font-size: 0.85rem;
+    }
+    
+    .player-card.active {
+        transform: scale(1.02); /* Less scaling on mobile */
+    }
 }
 
 /* Game Board */

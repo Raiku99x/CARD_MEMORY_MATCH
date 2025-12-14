@@ -314,18 +314,18 @@ function updatePlayersInfo() {
     container.innerHTML = '';
     
     gameState.players.forEach((player, index) => {
-        const isActive = index === gameState.currentPlayerIndex;
-        const playerCard = document.createElement('div');
-        playerCard.className = `player-card ${isActive ? 'active' : ''}`;
-        playerCard.innerHTML = `
-            <h3>🎮 ${player.name} ${isActive ? '⭐' : ''}</h3>
-            <div class="player-score">${player.score}</div>
-            <div class="player-matches">
-                ${player.matches.map(m => `<div class="matched-card-mini">${m}</div>`).join('')}
-            </div>
-        `;
-        container.appendChild(playerCard);
-    });
+    const isActive = index === gameState.currentPlayerIndex;
+    const playerCard = document.createElement('div');
+    playerCard.className = `player-card player-${index + 1} ${isActive ? 'active' : ''}`;
+    playerCard.innerHTML = `
+        <h3>🎮 ${player.name}</h3>
+        <div class="player-score">Score: ${player.score}</div>
+        <div class="player-matches">
+            ${player.matches.map(m => `<div class="matched-card-mini">${m}</div>`).join('')}
+        </div>
+    `;
+    container.appendChild(playerCard);
+});
 }
 
 function updateGameInfo() {
