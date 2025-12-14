@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#667eea">
     <title>Memory Match Master</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,7 +14,7 @@
             <h1 class="splash-title">Memory Match Master</h1>
             <div class="splash-animation">🎮</div>
             <p class="splash-credit">Created by<br><strong>John Lhoel A. Morillo</strong></p>
-            <button class="btn-primary" onclick="startGame()">Start Game</button>
+            <button class="btn-primary btn-large" onclick="startGame()">Start Game</button>
         </div>
     </div>
 
@@ -26,7 +27,7 @@
                     👤 Single Player
                 </button>
                 <button class="btn-large btn-secondary" onclick="showSetup('multi')">
-                    👥 Multiplayer (2-4 Players)
+                    👥 Multiplayer (2-4)
                 </button>
                 <button class="btn-large btn-accent" onclick="showLeaderboard()">
                     🏆 Leaderboard
@@ -37,11 +38,11 @@
 
     <!-- Setup Screen -->
     <div id="setup-screen" class="screen">
-        <div class="container">
+        <div class="container container-setup">
             <h2 id="setup-title">Game Setup</h2>
             
             <!-- Player Names -->
-            <div id="player-names-section">
+            <div id="player-names-section" class="setup-section">
                 <h3>Enter Player Names</h3>
                 <div id="player-inputs"></div>
             </div>
@@ -50,8 +51,9 @@
             <div class="setup-section">
                 <h3>Select Difficulty</h3>
                 <div class="difficulty-buttons">
-                    <button class="btn-difficulty" data-difficulty="easy" onclick="selectDifficulty('easy')">
-                        Easy<br><span>16 Cards</span>
+                    <button class="btn-difficulty active" data-difficulty="easy" onclick="selectDifficulty('easy')">
+    Easy<br><span>16 Cards</span>
+</button>
                     </button>
                     <button class="btn-difficulty" data-difficulty="medium" onclick="selectDifficulty('medium')">
                         Medium<br><span>36 Cards</span>
@@ -60,11 +62,11 @@
                         Hard<br><span>64 Cards</span>
                     </button>
                     <button class="btn-difficulty" data-difficulty="custom" onclick="selectDifficulty('custom')">
-                        Custom Hardcore<br><span>64-100 Cards</span>
+                        Custom<br><span>64-100</span>
                     </button>
                 </div>
-                <div id="custom-cards-input" style="display:none; margin-top: 20px;">
-                    <label>Number of Cards (must be even): </label>
+                <div id="custom-cards-input" style="display:none;">
+                    <label>Number of Cards (even):</label>
                     <input type="number" id="custom-cards" min="64" max="100" step="2" value="64">
                 </div>
             </div>
@@ -85,35 +87,33 @@
                     <h3>Time Settings</h3>
                     <div class="time-inputs">
                         <div class="time-input-group">
-                            <label>Time per Move (seconds):</label>
+                            <label>Time per Move (sec):</label>
                             <input type="number" id="time-per-move" min="10" max="120" value="30">
-                            <span class="hint">Time limit for each turn (0 = unlimited)</span>
                         </div>
                         <div class="time-input-group">
-                            <label>Game End Time (minutes):</label>
+                            <label>Game Duration (min):</label>
                             <input type="number" id="game-end-time" min="1" max="60" value="5">
-                            <span class="hint">Total game duration (0 = unlimited)</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="setup-actions">
-                <button class="btn-secondary" onclick="backToMenu()">Back</button>
-                <button class="btn-primary" onclick="startGameplay()">Start Game</button>
+                <button class="btn-secondary btn-full-mobile" onclick="backToMenu()">Back</button>
+                <button class="btn-primary btn-full-mobile" onclick="startGameplay()">Start Game</button>
             </div>
         </div>
     </div>
 
-    <div id="players-info"></div>
-
-<div class="game-header">
-    <button class="btn-small" onclick="pauseGame()">⏸ Pause</button>
-    <div id="game-info">
-        <div id="timer-display">Time: 00:00</div>
-        <div id="moves-display">Moves: 0</div>
-    </div>
-</div>
+   <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <div class="game-header">
+            <button class="btn-small" onclick="pauseGame()">⏸ Pause</button>
+            <div id="game-info">
+                <div id="timer-display">Time: 00:00</div>
+                <div id="moves-display">Moves: 0</div>
+            </div>
+        </div>
 
         <div id="players-info"></div>
 
@@ -126,8 +126,10 @@
     <div id="pause-menu" class="modal">
         <div class="modal-content">
             <h2>Game Paused</h2>
-            <button class="btn-primary" onclick="resumeGame()">Resume</button>
-            <button class="btn-secondary" onclick="quitGame()">Quit to Menu</button>
+            <div class="modal-buttons">
+                <button class="btn-primary btn-full" onclick="resumeGame()">Resume</button>
+                <button class="btn-secondary btn-full" onclick="quitGame()">Quit to Menu</button>
+            </div>
         </div>
     </div>
 
@@ -137,36 +139,36 @@
             <h2 id="end-title">Game Over!</h2>
             <div id="end-summary"></div>
             <div class="end-actions">
-                <button class="btn-primary" onclick="playAgain()">Play Again</button>
-                <button class="btn-secondary" onclick="backToMenu()">Main Menu</button>
-                <button class="btn-accent" onclick="showLeaderboard()">View Leaderboard</button>
+                <button class="btn-primary btn-full" onclick="playAgain()">Play Again</button>
+                <button class="btn-secondary btn-full" onclick="backToMenu()">Main Menu</button>
+                <button class="btn-accent btn-full" onclick="showLeaderboard()">Leaderboard</button>
             </div>
         </div>
     </div>
 
     <!-- Leaderboard Screen -->
     <div id="leaderboard-screen" class="screen">
-        <div class="container">
+        <div class="container container-leaderboard">
             <h2>🏆 Leaderboard</h2>
             
-            <div class="leaderboard-controls">
-                <div class="difficulty-tabs">
-                    <button class="tab-btn active" onclick="filterLeaderboard('easy')">Easy</button>
-                    <button class="tab-btn" onclick="filterLeaderboard('medium')">Medium</button>
-                    <button class="tab-btn" onclick="filterLeaderboard('hard')">Hard</button>
-                    <button class="tab-btn" onclick="filterLeaderboard('custom')">Custom</button>
-                </div>
-                <div class="sort-buttons">
-                    <label>Sort by: </label>
-                    <button class="btn-sort active" onclick="sortLeaderboard('score')">Combined Score</button>
-                    <button class="btn-sort" onclick="sortLeaderboard('moves')">Moves</button>
-                    <button class="btn-sort" onclick="sortLeaderboard('time')">Time</button>
-                </div>
+            <button class="tab-btn active" onclick="filterLeaderboard('easy', this)">Easy</button>
+<button class="tab-btn" onclick="filterLeaderboard('medium', this)">Medium</button>
+<button class="tab-btn" onclick="filterLeaderboard('hard', this)">Hard</button>
+<button class="tab-btn" onclick="filterLeaderboard('custom', this)">Custom</button>
+
+               <div class="sort-buttons">
+    <label>Sort by: </label>
+    <div class="sort-buttons-container">
+        <button class="btn-sort active" onclick="sortLeaderboard('score', this)">Combined Score</button>
+<button class="btn-sort" onclick="sortLeaderboard('moves', this)">Moves</button>
+<button class="btn-sort" onclick="sortLeaderboard('time', this)">Time</button>
+    </div>
+</div>
             </div>
 
             <div id="leaderboard-table"></div>
 
-            <button class="btn-secondary" onclick="backToMenu()" style="margin-top: 20px;">Back to Menu</button>
+            <button class="btn-secondary btn-full" onclick="backToMenu()" style="margin-top: 20px;">Back to Menu</button>
         </div>
     </div>
 

@@ -1,7 +1,7 @@
 // Game State
 let gameState = {
     mode: null, // 'single' or 'multi'
-    difficulty: null,
+    difficulty: 'easy', // Default to easy
     theme: 'emojis',
     numCards: 16,
     players: [],
@@ -41,8 +41,6 @@ function showSetup(mode) {
         mode === 'single' ? 'Single Player Setup' : 'Multiplayer Setup';
     
     setupPlayerInputs(mode);
-    
-    // Show/hide time settings for multiplayer
     document.getElementById('time-settings').style.display = 
         mode === 'multi' ? 'block' : 'none';
 }
@@ -92,19 +90,14 @@ function updatePlayerInputs() {
 function selectDifficulty(difficulty) {
     gameState.difficulty = difficulty;
     
-    // Remove active class from all buttons
     document.querySelectorAll('.btn-difficulty').forEach(btn => {
         btn.classList.remove('active');
     });
     
-    // Add active class to selected button
     document.querySelector(`[data-difficulty="${difficulty}"]`).classList.add('active');
-    
-    // Show/hide custom input
     document.getElementById('custom-cards-input').style.display = 
         difficulty === 'custom' ? 'block' : 'none';
     
-    // Set number of cards
     const cardCounts = { easy: 16, medium: 36, hard: 64, custom: 64 };
     gameState.numCards = cardCounts[difficulty];
 }
@@ -124,7 +117,6 @@ function startGameplay() {
         return;
     }
     
-    // Get custom card count if applicable
     if (gameState.difficulty === 'custom') {
         const customCards = parseInt(document.getElementById('custom-cards').value);
         if (customCards < 64 || customCards > 100 || customCards % 2 !== 0) {
@@ -134,7 +126,6 @@ function startGameplay() {
         gameState.numCards = customCards;
     }
     
-    // Setup players
     gameState.players = [];
     if (gameState.mode === 'single') {
         const name = document.getElementById('player1-name').value.trim() || 'Player 1';
@@ -148,16 +139,13 @@ function startGameplay() {
             gameState.players.push({ name, score: 0, matches: [] });
         }
         
-        // Get time settings
         gameState.timePerMove = parseInt(document.getElementById('time-per-move').value) || 0;
         gameState.gameEndTime = parseInt(document.getElementById('game-end-time').value) * 60 || 0;
     }
     
-    // Initialize game
     initializeGame();
     hideScreen('setup-screen');
     showScreen('game-screen');
-    document.getElementById('game-screen').classList.add('active');
 }
 
 function initializeGame() {
@@ -168,24 +156,17 @@ function initializeGame() {
     gameState.startTime = Date.now();
     gameState.isPaused = false;
     
-    // Create cards
     createCards();
-    
-    // Setup board
     setupBoard();
-    
-    // Setup UI
     updatePlayersInfo();
     updateGameInfo();
     updateTurnIndicator();
-    
-    // Start timers
     startGameTimer();
+    
     if (gameState.mode === 'multi' && gameState.timePerMove > 0) {
         startTurnTimer();
     }
     
-    // Set player turn background
     updatePlayerTurnBackground();
 }
 
@@ -194,14 +175,12 @@ function createCards() {
     const themeCards = themes[gameState.theme];
     const selectedCards = themeCards.slice(0, numPairs);
     
-    // Create pairs
     gameState.cards = [];
     selectedCards.forEach((value, index) => {
         gameState.cards.push({ id: index * 2, value, matched: false });
         gameState.cards.push({ id: index * 2 + 1, value, matched: false });
     });
     
-    // Shuffle
     for (let i = gameState.cards.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [gameState.cards[i], gameState.cards[j]] = [gameState.cards[j], gameState.cards[i]];
@@ -212,19 +191,16 @@ function setupBoard() {
     const board = document.getElementById('game-board');
     board.innerHTML = '';
     
-    // Set grid class based on difficulty
     const gridClass = gameState.difficulty === 'easy' ? 'board-easy' :
                      gameState.difficulty === 'medium' ? 'board-medium' : 'board-hard';
     board.className = gridClass;
     
-    // Adjust for custom difficulty
     if (gameState.difficulty === 'custom') {
         const cols = Math.ceil(Math.sqrt(gameState.numCards));
-        const cardSize = Math.max(50, Math.min(80, 800 / cols));
+        const cardSize = Math.max(35, Math.min(80, 800 / cols));
         board.style.gridTemplateColumns = `repeat(${cols}, ${cardSize}px)`;
     }
     
-    // Create card elements
     gameState.cards.forEach(card => {
         const cardEl = document.createElement('div');
         cardEl.className = 'card';
@@ -250,11 +226,9 @@ function flipCard(cardId) {
     const cardEl = document.querySelector(`[data-id="${cardId}"]`);
     if (cardEl.classList.contains('flipped')) return;
     
-    // Flip card
     cardEl.classList.add('flipped');
     gameState.flippedCards.push({ id: cardId, value: card.value, element: cardEl });
     
-    // Check for match
     if (gameState.flippedCards.length === 2) {
         checkMatch();
     }
@@ -264,25 +238,19 @@ function checkMatch() {
     const [card1, card2] = gameState.flippedCards;
     
     if (card1.value === card2.value) {
-        // Match found!
         setTimeout(() => {
             card1.element.classList.add('matched', 'highlight');
             card2.element.classList.add('matched', 'highlight');
             
-            // Update game state
             gameState.cards.find(c => c.id === card1.id).matched = true;
             gameState.cards.find(c => c.id === card2.id).matched = true;
             gameState.matches++;
             
-            // Update player score
             const currentPlayer = gameState.players[gameState.currentPlayerIndex];
             currentPlayer.score++;
             currentPlayer.matches.push(card1.value);
             
-            // Celebration effect
             createCelebration();
-            
-            // Update UI
             updatePlayersInfo();
             
             setTimeout(() => {
@@ -292,15 +260,12 @@ function checkMatch() {
             
             gameState.flippedCards = [];
             
-            // Check if game over
             if (gameState.matches === gameState.numCards / 2) {
                 endGame();
                 return;
             }
             
-            // In multiplayer, if match found, player gets another turn
             if (gameState.mode === 'multi') {
-                // Bonus turn - don't change player
                 updateTurnIndicator();
                 if (gameState.timePerMove > 0) {
                     resetTurnTimer();
@@ -311,13 +276,11 @@ function checkMatch() {
             }
         }, 500);
     } else {
-        // No match
         setTimeout(() => {
             card1.element.classList.remove('flipped');
             card2.element.classList.remove('flipped');
             gameState.flippedCards = [];
             
-            // Next player's turn
             if (gameState.mode === 'multi') {
                 nextPlayer();
             } else {
@@ -356,7 +319,7 @@ function updatePlayersInfo() {
         playerCard.className = `player-card ${isActive ? 'active' : ''}`;
         playerCard.innerHTML = `
             <h3>🎮 ${player.name} ${isActive ? '⭐' : ''}</h3>
-            <div class="player-score">Score: ${player.score}</div>
+            <div class="player-score">${player.score}</div>
             <div class="player-matches">
                 ${player.matches.map(m => `<div class="matched-card-mini">${m}</div>`).join('')}
             </div>
@@ -370,7 +333,7 @@ function updateGameInfo() {
     const minutes = Math.floor(elapsedTime / 60).toString().padStart(2, '0');
     const seconds = (elapsedTime % 60).toString().padStart(2, '0');
     
-    document.getElementById('timer-display').textContent = `Time: ${minutes}:${seconds}`;
+    document.getElementById('timer-display').textContent = `${minutes}:${seconds}`;
     document.getElementById('moves-display').textContent = `Moves: ${gameState.moves}`;
 }
 
@@ -398,7 +361,6 @@ function startGameTimer() {
         if (!gameState.isPaused) {
             updateGameInfo();
             
-            // Check game end time
             if (gameState.gameEndTime > 0) {
                 const elapsed = Math.floor((Date.now() - gameState.startTime) / 1000);
                 if (elapsed >= gameState.gameEndTime) {
@@ -417,7 +379,6 @@ function startTurnTimer() {
             timeLeft--;
             
             if (timeLeft <= 0) {
-                // Time's up! Reset cards and move to next player
                 gameState.flippedCards.forEach(card => {
                     card.element.classList.remove('flipped');
                 });
@@ -454,7 +415,6 @@ function quitGame() {
     
     document.getElementById('pause-menu').classList.remove('active');
     hideScreen('game-screen');
-    document.getElementById('game-screen').classList.remove('active');
     document.body.className = '';
     showScreen('menu-screen');
 }
@@ -465,12 +425,10 @@ function endGame() {
     
     const elapsedTime = Math.floor((Date.now() - gameState.startTime) / 1000);
     
-    // Save to leaderboard if single player
     if (gameState.mode === 'single') {
         saveToLeaderboard(gameState.players[0].name, gameState.difficulty, gameState.moves, elapsedTime);
     }
     
-    // Show end screen
     showEndScreen(elapsedTime);
 }
 
@@ -491,7 +449,6 @@ function showEndScreen(elapsedTime) {
             <div class="end-stat">⭐ Matches: ${gameState.matches}</div>
         `;
     } else {
-        // Find winner(s)
         const maxScore = Math.max(...gameState.players.map(p => p.score));
         const winners = gameState.players.filter(p => p.score === maxScore);
         
@@ -567,7 +524,6 @@ async function saveToLeaderboard(playerName, difficulty, moves, time) {
     };
     
     try {
-        // Get existing leaderboard
         const key = `leaderboard_${difficulty}`;
         let leaderboard = [];
         
@@ -577,20 +533,13 @@ async function saveToLeaderboard(playerName, difficulty, moves, time) {
                 leaderboard = JSON.parse(result.value);
             }
         } catch (e) {
-            // Key doesn't exist yet, start fresh
             leaderboard = [];
         }
         
-        // Add new entry
         leaderboard.push(entry);
-        
-        // Sort by score (lower is better)
         leaderboard.sort((a, b) => a.score - b.score);
-        
-        // Keep top 100
         leaderboard = leaderboard.slice(0, 100);
         
-        // Save
         await window.storage.set(key, JSON.stringify(leaderboard), true);
     } catch (error) {
         console.error('Error saving to leaderboard:', error);
@@ -598,8 +547,6 @@ async function saveToLeaderboard(playerName, difficulty, moves, time) {
 }
 
 function calculateScore(moves, time) {
-    // Combined score: lower is better
-    // Weight moves more heavily than time
     return (moves * 100) + time;
 }
 
@@ -614,22 +561,26 @@ async function showLeaderboard() {
     await loadLeaderboard(currentLeaderboardDifficulty, currentLeaderboardSort);
 }
 
-async function filterLeaderboard(difficulty) {
+async function filterLeaderboard(difficulty, buttonElement) {
     currentLeaderboardDifficulty = difficulty;
     
     // Update active tab
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
+    if (buttonElement) {
+        buttonElement.classList.add('active');
+    }
     
     await loadLeaderboard(difficulty, currentLeaderboardSort);
 }
 
-async function sortLeaderboard(sortBy) {
+async function sortLeaderboard(sortBy, buttonElement) {
     currentLeaderboardSort = sortBy;
     
     // Update active sort button
     document.querySelectorAll('.btn-sort').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
+    if (buttonElement) {
+        buttonElement.classList.add('active');
+    }
     
     await loadLeaderboard(currentLeaderboardDifficulty, sortBy);
 }
@@ -647,16 +598,14 @@ async function loadLeaderboard(difficulty, sortBy) {
                 leaderboard = JSON.parse(result.value);
             }
         } catch (e) {
-            // No leaderboard data yet
             leaderboard = [];
         }
         
         if (leaderboard.length === 0) {
-            tableDiv.innerHTML = '<p style="text-align:center; padding:40px; color:#7f8c8d;">No records yet. Be the first!</p>';
+            tableDiv.innerHTML = '<p style="text-align:center; padding:20px; color:#7f8c8d;">No records yet!</p>';
             return;
         }
         
-        // Sort based on selected criteria
         if (sortBy === 'moves') {
             leaderboard.sort((a, b) => a.moves - b.moves);
         } else if (sortBy === 'time') {
@@ -665,7 +614,6 @@ async function loadLeaderboard(difficulty, sortBy) {
             leaderboard.sort((a, b) => a.score - b.score);
         }
         
-        // Display leaderboard
         tableDiv.innerHTML = leaderboard.map((entry, index) => {
             const minutes = Math.floor(entry.time / 60);
             const seconds = entry.time % 60;
@@ -676,7 +624,7 @@ async function loadLeaderboard(difficulty, sortBy) {
                     <div class="entry-rank">${index + 1}</div>
                     <div class="entry-name">${entry.name}</div>
                     <div class="entry-stats">
-                        <span>🎯 ${entry.moves} moves</span>
+                        <span>🎯 ${entry.moves}</span>
                         <span>⏱️ ${minutes}:${seconds.toString().padStart(2, '0')}</span>
                         <span>⭐ ${entry.score}</span>
                     </div>
@@ -686,7 +634,7 @@ async function loadLeaderboard(difficulty, sortBy) {
         
     } catch (error) {
         console.error('Error loading leaderboard:', error);
-        tableDiv.innerHTML = '<p style="text-align:center; padding:40px; color:#e74c3c;">Error loading leaderboard</p>';
+        tableDiv.innerHTML = '<p style="text-align:center; padding:20px; color:#e74c3c;">Error loading</p>';
     }
 }
 
@@ -704,18 +652,9 @@ function backToMenu() {
     hideScreen('end-screen');
     hideScreen('leaderboard-screen');
     hideScreen('game-screen');
-    document.getElementById('game-screen').classList.remove('active');
     document.body.className = '';
     showScreen('menu-screen');
     
     if (gameState.gameTimer) clearInterval(gameState.gameTimer);
     if (gameState.turnTimer) clearInterval(gameState.turnTimer);
 }
-
-// Initialize on load
-window.addEventListener('load', () => {
-    // Auto-hide splash after 3 seconds
-    setTimeout(() => {
-        // Splash stays visible, user clicks to continue
-    }, 100);
-});
