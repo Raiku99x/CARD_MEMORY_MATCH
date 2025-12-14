@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0, user-scalable=yes">
-    <meta name="theme-color" content="#667eea">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memory Match Master</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -107,15 +105,15 @@
         </div>
     </div>
 
-    <!-- Game Screen -->
-    <div id="game-screen" class="screen">
-        <div class="game-header">
-            <button class="btn-small" onclick="pauseGame()">⏸ Pause</button>
-            <div id="game-info">
-                <div id="timer-display">Time: 00:00</div>
-                <div id="moves-display">Moves: 0</div>
-            </div>
-        </div>
+    <div id="players-info"></div>
+
+<div class="game-header">
+    <button class="btn-small" onclick="pauseGame()">⏸ Pause</button>
+    <div id="game-info">
+        <div id="timer-display">Time: 00:00</div>
+        <div id="moves-display">Moves: 0</div>
+    </div>
+</div>
 
         <div id="players-info"></div>
 
@@ -159,13 +157,11 @@
                     <button class="tab-btn" onclick="filterLeaderboard('custom')">Custom</button>
                 </div>
                 <div class="sort-buttons">
-    <label>Sort by: </label>
-    <div class="sort-buttons-container">
-        <button class="btn-sort active" onclick="sortLeaderboard('score')">Combined Score</button>
-        <button class="btn-sort" onclick="sortLeaderboard('moves')">Moves</button>
-        <button class="btn-sort" onclick="sortLeaderboard('time')">Time</button>
-    </div>
-</div>
+                    <label>Sort by: </label>
+                    <button class="btn-sort active" onclick="sortLeaderboard('score')">Combined Score</button>
+                    <button class="btn-sort" onclick="sortLeaderboard('moves')">Moves</button>
+                    <button class="btn-sort" onclick="sortLeaderboard('time')">Time</button>
+                </div>
             </div>
 
             <div id="leaderboard-table"></div>
