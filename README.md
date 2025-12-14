@@ -2,7 +2,6 @@
 
 **Created by:** John Lhoel A. Morillo  
 **Course:** Bachelor of Science in Computer Science (BSCS)  
-**School:** Camarines Sur Polytechnic Colleges  
 
 ---
 
@@ -95,7 +94,7 @@ Through this project, I gained hands-on experience with:
 ---
 
 **Developed by John Lhoel A. Morillo**  
-*Camarines Sur Polytechnic Colleges - BSCS Program*
+*CSPC - BSCS Program*
 
 ---
 
