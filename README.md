@@ -94,7 +94,7 @@ Through this project, I gained hands-on experience with:
 
 ---
 
-**Developed with ❤️ by John Lhoel A. Morillo**  
+**Developed by John Lhoel A. Morillo**  
 *Camarines Sur Polytechnic Colleges - BSCS Program*
 
 ---
