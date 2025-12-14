@@ -359,14 +359,14 @@ h3 {
 }
 
 /* Game Screen */
-.game-screen {
-    padding: 10px;
-    align-items: stretch;
-    max-height: unset;
-    height: 100vh;
-    overflow-y: auto;
+#game-screen.active {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    padding: clamp(10px, 3vw, 20px);
+    overflow: hidden;
 }
 
 .game-header {
@@ -376,9 +376,11 @@ h3 {
     background: rgba(255, 255, 255, 0.95);
     padding: 12px 15px;
     border-radius: 12px;
-    margin-bottom: 12px;
     gap: 12px;
     flex-wrap: wrap;
+    width: 100%;
+    max-width: 1200px;
+    flex-shrink: 0;
 }
 
 #game-info {
@@ -393,8 +395,9 @@ h3 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: clamp(8px, 2.5vw, 15px);
-    margin-bottom: clamp(10px, 2.5vw, 20px);
     width: 100%;
+    max-width: 1200px;
+    flex-shrink: 0;
 }
 
 /* Mobile - Always Horizontal */
@@ -528,17 +531,14 @@ h3 {
     }
 }
 
-/* Game Board */
 #game-board {
     display: grid;
-    gap: 6px;
+    gap: 4px;
     justify-content: center;
-    margin: 12px auto;
-    flex-grow: 1;
+    margin: 0 auto;
     padding: 0 5px;
     max-width: 100%;
     width: fit-content;
-    overflow-y: auto;
 }
 
 .board-easy {
@@ -652,10 +652,12 @@ h3 {
     background: rgba(255, 255, 255, 0.95);
     padding: 12px;
     border-radius: 12px;
-    margin-top: 12px;
     font-size: 0.95rem;
     font-weight: bold;
     color: #2c3e50;
+    width: 100%;
+    max-width: 1200px;
+    flex-shrink: 0;
 }
 
 /* Modal */
